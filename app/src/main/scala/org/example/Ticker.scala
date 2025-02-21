@@ -18,14 +18,28 @@ class Ticker(val symbol: String, val frequency: String) {
   }
 
   def send_get_request(): Response[String] = {
-    val headers = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
     val uri = uri"$BASE_URL/$symbol"
 
-    val request = basicRequest.get(uri).header("User-Agent", headers)
+    val request = basicRequest.get(uri).header("User-Agent", get_user_agent())
 
-    val response = quickRequest.get(uri).header("User-Agent", headers).send(httpClient)
+    val response = quickRequest.get(uri).header("User-Agent", get_user_agent()).send(httpClient)
     return response
   }
 
-  httpClient.close()
+  def close_http_client(): Unit =
+    httpClient.close()
+
+  /*
+  * Method that returns the headers of the request based on the operating system
+  * */
+  def get_user_agent(): String = {
+    val os = System.getProperty("os.name").toLowerCase()
+    if (os.contains("win")) {
+      return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    } else if (os.contains("nix") || os.contains("nux")) {
+      return "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    } else {
+      return "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    }
+  }
 }
