@@ -22,6 +22,10 @@ dependencies {
     // for reading the configuration file
     implementation 'com.typesafe:config:1.4.2'
     implementation 'com.softwaremill.sttp.client4:core_3:4.0.0-RC1'
+    implementation 'org.apache.spark:spark-core_2.13:3.5.1'
+    implementation 'com.lihaoyi:ujson_3:4.1.0'
+    implementation 'org.apache.spark:spark-sql_2.13:3.5.1'
+
     // Use Scala 2.13 in our library project
     implementation libs.scala.library
 
@@ -46,6 +50,10 @@ java {
 }
 
 application {
+    applicationDefaultJvmArgs = [
+            "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+            "--add-opens=java.base/java.nio=ALL-UNNAMED"
+    ]
     // Define the main class for the application.
     mainClass = 'org.example.App'
 }
