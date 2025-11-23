@@ -4,3 +4,7 @@
 # Ignore Gradle build output directory
 build
 .idea
+.vscode
+.metals
+.bloop
+.DS_Store
